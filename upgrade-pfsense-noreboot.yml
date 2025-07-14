@@ -1,0 +1,37 @@
+- name: Upgrade pfSense to latest version
+  hosts: all
+  gather_facts: false
+  become: no
+  tasks:
+    - name: IDENTIFIER - This is pfsense Upgrade Playbook v1 with raw command
+      debug:
+        msg: "Playbook loaded : Pfsense Upgrade with raw command "
+
+    - name: Check pfSense version
+      raw: cat /etc/version
+      register: current_version
+
+    - debug:
+        msg: "Current pfSense version is {{ current_version.stdout }}"
+
+    - name: Run pfSense update
+      raw: pfSense-upgrade -y
+      register: upgrade_output
+      ignore_errors: yes
+
+    - debug:
+        var: upgrade_output.stdout_lines
+
+    - name: Reboot pfSense (if needed)
+      #raw: reboot
+        #async: 1
+        #poll: 0
+      #ignore_errors: yes
+
+    - name: Wait for pfSense to come back
+      wait_for:
+        host: "{{ inventory_hostname }}"
+        port: 22
+        delay: 30
+        timeout: 300
+        state: started   
