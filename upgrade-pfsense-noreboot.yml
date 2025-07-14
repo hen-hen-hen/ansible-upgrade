@@ -28,10 +28,10 @@
         #poll: 0
       #ignore_errors: yes
 
-    - name: Wait for pfSense to come back
-      wait_for:
-        host: "{{ inventory_hostname }}"
-        port: 22
-        delay: 30
-        timeout: 300
-        state: started   
+    #- name: Wait for pfSense to come back
+      #wait_for:
+        #host: "{{ inventory_hostname }}"
+        #port: 22
+        #delay: 30
+        #timeout: 300
+        #state: started   
